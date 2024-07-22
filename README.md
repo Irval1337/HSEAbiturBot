@@ -1,1 +1,1 @@
-# HSEAbiturBot
+# HSEAbitBot
