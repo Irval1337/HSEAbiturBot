@@ -52,7 +52,7 @@ def generate_message(watching_user: dict):
     for s_course_id in watching_user["watching_courses"]:
         course_id = int(s_course_id) - 1
         message += f"\n\n<b>{excelhelper.report.courses[course_id].course_data.code} {excelhelper.report.courses[course_id].course_data.title}</b>"
-        message += f"\nМесто в рейтинге: {watching_user["watching_courses"][s_course_id]}"  # report.courses[course_id].applicants[watching_user["user_data"]].rating
+        message += f"\nМесто в рейтинге: {watching_user["watching_courses"][s_course_id]}"
 
     return message
 
@@ -78,12 +78,16 @@ def generate_course_message(watching_user: dict, course_table: excelhelper.Cours
     message += f"\n\nИнформация об абитуриенте"
     message += f"\nМесто в рейтинге: <b>{course_table.applicants[watching_user["user_data"]].rating}</b>"
     message += f"\nЛьгота БВИ: <b>{'Да' if course_table.applicants[watching_user["user_data"]].BVI else 'Нет'}</b>"
+    if course_table.applicants[watching_user["user_data"]].BVI:
+        message += f" ({course_table.applicants[watching_user["user_data"]].olymp_name})"
     message += f"\nОсобое право: <b>{'Да' if course_table.applicants[watching_user["user_data"]].special_quota else 'Нет'}</b>"
     message += f"\nОтдельная квота: <b>{'Да' if course_table.applicants[watching_user["user_data"]].separate_quota else 'Нет'}</b>"
     message += f"\nЦелевое обучение: <b>{'Да' if course_table.applicants[watching_user["user_data"]].target_quota else 'Нет'}</b>"
+    message += f"\nПриоритет: <b>{course_table.applicants[watching_user["user_data"]].other_prior}</b>"
     message += f"\nБаллов за ИД: <b>{course_table.applicants[watching_user["user_data"]].additional_result}</b>"
     message += f"\nСумма баллов: <b>{course_table.applicants[watching_user["user_data"]].sum_result}</b>"
     message += f"\nОригинал аттестата: <b>{'Да' if course_table.applicants[watching_user["user_data"]].given_docs else 'Нет'}</b>"
+    message += f"\nТребуется общежитие: <b>{'Да' if course_table.applicants[watching_user["user_data"]].dormitory else 'Нет'}</b>"
     message += f"\nВид места: <b>{place_to_str(course_table.applicants[watching_user["user_data"]].place_type)}</b>"
     return message
 

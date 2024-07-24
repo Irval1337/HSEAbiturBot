@@ -12,13 +12,14 @@ class ExamResult:
 
 
 class Applicant:
-    def __init__(self, rating: int, SNILS: str, BVI: bool, special_quota: bool, target_quota: bool, separate_quota: bool,
+    def __init__(self, rating: int, SNILS: str, BVI: bool, olymp_name: str, special_quota: bool, target_quota: bool, separate_quota: bool,
                  target_prior: int, other_prior: int, highest_prior: int, paid_prior: int, exam_results: list[ExamResult],
                  additional_result: int, sum_result: int, place_type: int, given_docs: bool, approval: bool, preemptive: bool,
                  dormitory: bool, docs_return: bool):
         self.rating = rating
         self.SNILS = SNILS
         self.BVI = BVI
+        self.olymp_name = olymp_name
         self.special_quota = special_quota
         self.separate_quota = separate_quota
         self.target_quota = target_quota
@@ -78,15 +79,15 @@ class CourseTable:
         self.places_separate_bvi = 0
 
         for i in range(14, 14 + count):
-            end_exams = 11
+            end_exams = 14
             exams = []
             while not self.table.iat[13, end_exams].startswith("Итоговая"):
                 exams.append(ExamResult(self.table.iat[14, end_exams], self.parse_int(self.table.iat[i, end_exams])))
                 end_exams += 1
-            applicant = Applicant(self.table.iat[i, 0], self.parse_snils(self.table.iat[i, 1]), self.parse_flag(self.table.iat[i, 3]),
-                                  self.parse_flag(self.table.iat[i, 4]), self.parse_flag(self.table.iat[i, 5]), self.parse_flag(self.table.iat[i, 6]),
-                                  self.parse_int(self.table.iat[i, 7]), self.parse_int(self.table.iat[i, 8]), self.parse_int(self.table.iat[i, 9]),
-                                  self.parse_int(self.table.iat[i, 10]), exams, self.parse_int(self.table.iat[i, end_exams]), self.parse_int(self.table.iat[i, end_exams + 1]),
+            applicant = Applicant(self.table.iat[i, 0], self.parse_snils(self.table.iat[i, 1]), self.parse_flag(self.table.iat[i, 3]), self.table.iat[i, 4],
+                                  self.parse_flag(self.table.iat[i, 7]), self.parse_flag(self.table.iat[i, 8]), self.parse_flag(self.table.iat[i, 9]),
+                                  self.parse_int(self.table.iat[i, 10]), self.parse_int(self.table.iat[i, 11]), self.parse_int(self.table.iat[i, 12]),
+                                  self.parse_int(self.table.iat[i, 13]), exams, self.parse_int(self.table.iat[i, end_exams]), self.parse_int(self.table.iat[i, end_exams + 1]),
                                   self.parse_place(self.table.iat[i, end_exams + 2]), self.parse_flag(self.table.iat[i, end_exams + 3]), self.parse_flag(self.table.iat[i, end_exams + 4]),
                                   self.parse_flag(self.table.iat[i, end_exams + 5]), self.parse_flag(self.table.iat[i, end_exams + 6]), self.parse_flag(self.table.iat[i, end_exams + 7]))
             if applicant.BVI and applicant.separate_quota:
